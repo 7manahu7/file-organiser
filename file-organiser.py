@@ -2,42 +2,71 @@ from pathlib import Path
 import os
 import time
 
+from rich.console import Console
+from rich.progress import Progress
+
+from rich.table import Table
+
 folder = Path("/home/manahu/Downloads/")
+console = Console()
 
 
 def main():
 
-    for file in folder.iterdir():
-        suffix = file.suffix
+    table = Table()
+    table.add_column("files that were affected")
+    file_length = len([file for file in folder.iterdir() if file.is_file()])
 
-        if suffix in [".jpg", ".jpeg", ".png"]:
-            os.system(f"mv {file} ~/Downloads/Images/")
+    with Progress() as progress:
+        task = progress.add_task("men in work...", total=file_length)
 
-            time.sleep(2)
-            print()
-            print("-------------------------------------------")
-            print(f"moved {file.name} to the 'Images' directory.")
-            print("-------------------------------------------")
-            print()
-        elif suffix in [".txt", ".pdf", ".md"]:
-            os.system(f"mv {file} ~/Downloads/Text")
+        for file in folder.iterdir():
+            suffix = file.suffix
+            table.add_row("")
+            table.add_row(file.name)
 
-            time.sleep(2)
-            print()
-            print("-------------------------------------------")
-            print(f"moved {file.name} to the 'Text' directory.")
-            print("-------------------------------------------")
-            print()
+            if suffix in [".jpg", ".jpeg", ".png"]:
+                os.system(f"mv {file} ~/Downloads/Images/")
 
-        elif suffix in [".css", ".js", ".lua", ".py", ".gd", ".go", ".c", ".cpp"]:
-            os.system(f"mv {file} ~/Downloads/Scripts")
+                time.sleep(1)
+                print()
+                print("-------------------------------------------")
+                print(f"moved {file.name} to the 'Images' directory.")
+                print("-------------------------------------------")
+                print()
+            elif suffix in [".txt", ".pdf", ".md"]:
+                os.system(f"mv {file} ~/Downloads/Text")
 
-            time.sleep(2)
-            print()
-            print("-------------------------------------------")
-            print(f"moved {file.name} to the 'Scripts' directory.")
-            print("-------------------------------------------")
-            print()
+                time.sleep(1)
+                print()
+                print("-------------------------------------------")
+                print(f"moved {file.name} to the 'Text' directory.")
+                print("-------------------------------------------")
+                print()
+
+            elif suffix in [".css", ".js", ".lua", ".py", ".gd", ".go", ".c", ".cpp"]:
+                os.system(f"mv {file} ~/Downloads/Scripts")
+
+                time.sleep(1)
+                print()
+                print("-------------------------------------------")
+                print(f"moved {file.name} to the 'Scripts' directory.")
+                print("-------------------------------------------")
+                print()
+
+            elif suffix in [".zip", ".7zip"]:
+                os.system(f"mv {file} ~/Downloads/Zips")
+
+                time.sleep(1)
+                print()
+                print("-------------------------------------------")
+                print(f"moved {file.name} to the 'Zips' directory.")
+                print("-------------------------------------------")
+                print()
+
+            progress.advance(task)
+
+    console.print(table)
 
 
 main()
