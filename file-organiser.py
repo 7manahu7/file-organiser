@@ -7,6 +7,8 @@ from rich.progress import Progress
 
 from rich.table import Table
 
+from rich.panel import Panel
+
 folder = Path("/home/manahu/Downloads/")
 console = Console()
 
